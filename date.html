@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Days Left Counter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            /* justify-content: center;
+            align-items: center; */
+            background: #262626;
+            color: #ffffff;
+            font-family: 'SF Pro Light', Helvetica, sans-serif;
+            flex-direction: column;
+        }
+        .down {
+             text-align: center;
+        } 
+        #counter {
+            text-align: center;
+            margin-bottom:70px;
+           
+        }
+        
+        #number {
+             overflow:visible;
+            background: linear-gradient(180deg,rgb(0, 144, 70) 0%, rgb(0, 99, 48) 100%);
+            font-family: 'SF Pro';
+            font-size: 200px;
+            font-weight: 500;
+            display: inline;
+            padding: 20px;
+            padding-left:75px;
+            padding-right:75px;
+            border-radius: 75px;
+            margin: 10px;
+            background-color: rgb(0, 117, 12);
+        }
+        @font-face {
+            font-family: SF Pro Ultralight;
+            src: url(SF-Pro-Display-Ultralight.otf);
+        }
+        @font-face {
+            font-family: SF Pro Bold;
+            src: url(SF-Pro-Text-Bold.otf);
+        }
+        @font-face {
+            font-family: SF Pro Medium;
+            src: url(SF-Pro-Text-Medium.otf);
+        }
+        @font-face {
+            font-family: SF Pro Light;
+            src: url(SF-Pro-Text-Light.otf);
+        }
+        #label {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+        h1, h6{
+            text-align: center;
+        }
+        #ramadan{
+            font-family: 'SF Pro Bold', Arial;
+            margin-top: 20px;
+            padding: 0px;
+            font-size:40px;
+        }
+        #day_remaining{
+            font-weight: 200;
+            padding: 0px;
+            font-size: 80px;
+            margin-bottom:70px;
+        }
+        .down{
+            font-size: 12.5px;
+            /* padding: 10px; */
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.602);
+        }
+        #as-of-label{
+            font-size: 20px;
+            padding: 10px;
+        }
+        /* Smooth transition base */
+    .fade-up {
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .fade-up.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="text">
+        <h1 id="ramadan">Ramadan • 1447</h1>
+        <h6 id="day_remaining">Days remaining</h6>
+    </div>
+
+    <div id="counter">
+        <div id="number">0</div>
+        </div>
+    
+    <div class="down">
+    <h1 id="as-of-label">as of</h1>
+    <h2 id="as-of-date"></h2>
+</div>
+    <div id="number" class="fade-up"></div>
+    <h2 id="as-of-date" class="fade-up"></h2>
+
+
+    <script>
+    /* =========================================
+       🔴 SET YOUR DESIRED TARGET DATE HERE 🔴
+       Format: new Date(YEAR, MONTH-1, DAY)
+       Example below = 18 February 2026
+       ========================================= */
+    const TARGET_DATE = new Date(2026, 1, 18);
+    /* ========================================= */
+
+    const numberEl = document.getElementById("number");
+    const asOfDateEl = document.getElementById("as-of-date");
+
+    function formatDate(date) {
+        return date.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric"
+        });
+    }
+
+    function animateText(el, newText) {
+        el.classList.remove("show");
+
+        setTimeout(() => {
+            el.textContent = newText;
+            el.classList.add("show");
+        }, 150);
+    }
+
+    function updateDaysLeft() {
+        const today = new Date();
+        const target = new Date(TARGET_DATE); // clone
+
+        today.setHours(0, 0, 0, 0);
+        target.setHours(0, 0, 0, 0);
+
+        const diffTime = target - today;
+        const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const safeDays = daysLeft > 0 ? daysLeft : 0;
+
+        animateText(numberEl, safeDays);
+        animateText(asOfDateEl, formatDate(today));
+    }
+
+    // Initial reveal
+    updateDaysLeft();
+
+    // Midnight-safe updates
+    setInterval(updateDaysLeft, 60000);
+</script>
+
+
+
+
+</body>
+</html>
