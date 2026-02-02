@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <title>Days Left Counter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+        }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #262626;
+            color: #ffffff;
+            font-family: 'SF Pro Light', Helvetica, sans-serif;
+        }
+        .down {
+             text-align: center;
+        } 
+        #counter {
+            text-align: center;
+            margin-bottom:40px;
+        }
+        /* mid-button */
+        #number {
+            overflow:visible;
+            background: linear-gradient(180deg,rgb(0, 144, 70) 0%, rgb(0, 99, 48) 100%);
+            font-family: 'SF Pro';
+            font-size: 350px;
+            font-weight: 500;
+            display: inline;
+            padding: 10px;
+            padding-left:75px;
+            padding-right:75px;
+            border-radius: 125px;
+            margin: 10px;
+            background-color: rgb(0, 117, 12);
+        }
+        @font-face {
+            font-family: SF Pro Ultralight;
+            src: url(SF-Pro-Display-Ultralight.otf);
+        }
+        @font-face {
+            font-family: SF Pro Bold;
+            src: url(SF-Pro-Text-Bold.otf);
+        }
+        @font-face {
+            font-family: SF Pro Medium;
+            src: url(SF-Pro-Text-Medium.otf);
+        }
+        @font-face {
+            font-family: SF Pro Light;
+            src: url(SF-Pro-Text-Light.otf);
+        }
+        #label {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+        h1, h6{
+            text-align: center;
+        }
+        /* Up-ramadan text */
+        #ramadan{
+            font-family: 'SF Pro Bold', Arial;
+            margin-top: 20px;
+            padding: 0px;
+            font-size:50px;
+        }
+        /* Days remaining */
+        #day_remaining{
+            font-weight: 200;
+            padding: 0px;
+            font-size: 100px;
+            margin-bottom:70px;
+        }
+        .down{
+            font-size: 17px;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.602);
+        }
+        #as-of-label{
+            font-size: 20px;
+            padding: 10px;
+        }
+        /* Smooth transition base */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            background: #1a1a1a;
+            text-align: center;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.439);
+            line-height: 1.5;
+            display: flex;
+            justify-content:space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="text">
+        <h1 id="ramadan">Ramadan • 1447</h1>
+        <h6 id="day_remaining">Days remaining</h6>
+    </div>
+
+    <div id="counter">
+        <div id="number">0</div>
+    </div>
+    
+    <div class="down">
+        <h1 id="as-of-label">as of</h1>
+        <h2 id="as-of-date"></h2>
+    </div>
+    <div id="number" class="fade-up"></div>
+    <h2 id="as-of-date" class="fade-up"></h2>
+
+    <!-- Footer -->
+    <footer>
+        <div class="left-footer" >Version 1Q</div>
+        <div class="right-footer" >ig: @mdmuksitnafi23</div>
+    </footer>
+
+    <script>
+    /* =========================================
+       🔴 SET YOUR DESIRED TARGET DATE HERE 🔴
+       Format: new Date(YEAR, MONTH-1, DAY)
+       Example below = 18 February 2026
+       ========================================= */
+    const TARGET_DATE = new Date(2026, 1, 18);
+    /* ========================================= */
+
+    const numberEl = document.getElementById("number");
+    const asOfDateEl = document.getElementById("as-of-date");
+
+    let lastRenderedDay = null;
+
+    function formatDate(date) {
+        return date.toLocaleDateString("en-US", {
+            weekday: "long",
+            month: "long",
+            day: "numeric"
+        });
+    }
+
+    function calculateDaysLeft(today) {
+        const target = new Date(TARGET_DATE);
+
+        today.setHours(0, 0, 0, 0);
+        target.setHours(0, 0, 0, 0);
+
+        const diff = target - today;
+        return Math.max(Math.ceil(diff / (1000 * 60 * 60 * 24)), 0);
+    }
+
+    function animateText(el, newText) {
+        el.classList.remove("show");
+        setTimeout(() => {
+            el.textContent = newText;
+            el.classList.add("show");
+        }, 120);
+    }
+
+    function updateIfDayChanged(force = false) {
+        const now = new Date();
+        const todayKey = now.toDateString(); // day identity
+
+        if (force || todayKey !== lastRenderedDay) {
+            lastRenderedDay = todayKey;
+
+            const daysLeft = calculateDaysLeft(new Date(now));
+            animateText(numberEl, daysLeft);
+            animateText(asOfDateEl, formatDate(now));
+        }
+    }
+
+    /* ---------- SAFETY MECHANISMS ---------- */
+    updateIfDayChanged(true);
+    setInterval(() => {
+        updateIfDayChanged(false);
+    }, 30 * 1000); // every 30 seconds
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) {
+            updateIfDayChanged(true);
+        }
+    });
+    </script>
+</body>
+</html>
