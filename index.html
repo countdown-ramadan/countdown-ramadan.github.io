@@ -3,11 +3,10 @@
 <head>
     
     <meta charset="UTF-8">
-    <title>Countdown Ramadan</title>
+    <title>Days Left Counter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
-<link rel="icon" type="image/x-icon" href="favico.png">
     <style>
         *{
             padding: 0;
@@ -18,9 +17,10 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background: #262626;
+            /* background: #262626; */
             color: #ffffff;
             font-family: 'SF Pro Light', Helvetica, sans-serif;
+            background: url(Untitled-12.png);
         }
         .down {
              text-align: center;
@@ -33,16 +33,24 @@
         #number {
             overflow:visible;
             background: linear-gradient(180deg,rgb(0, 144, 70) 0%, rgb(0, 99, 48) 100%);
-            font-family: 'SF Pro';
+            font-family: 'SF Pro Medium';
             font-size: 350px;
             font-weight: 500;
             display: inline;
-            padding: 10px;
-            padding-left:75px;
-            padding-right:75px;
+            padding: 7px;
+            padding-left:65px;
+            padding-right:65px;
             border-radius: 125px;
             margin: 10px;
             background-color: rgb(0, 117, 12);
+            transition: padding 0.5s, padding-left 0.5s, padding-right 0.5s,font-size 0.5s;
+        }
+        #number:hover{
+            cursor: pointer;
+            padding: 10px;
+            padding-left: 75px;
+            padding-right: 75px;
+            font-size: 360px;
         }
         @font-face {
             font-family: SF Pro Ultralight;
@@ -57,6 +65,10 @@
             src: url(SF-Pro-Text-Medium.otf);
         }
         @font-face {
+            font-family: Ramadan;
+            src: url(AwalRamadhan.ttf);
+        }
+        @font-face {
             font-family: SF Pro Light;
             src: url(SF-Pro-Text-Light.otf);
         }
@@ -69,17 +81,20 @@
         }
         /* Up-ramadan text */
         #ramadan{
-            font-family: 'SF Pro Bold', Arial;
-            margin-top: 20px;
+            font-family: 'Ramadan', Arial;
+            margin-top: -50px;
             padding: 0px;
-            font-size:50px;
+            font-weight: 100;
+            font-size:75px;
+            letter-spacing: 4.5px;
         }
         /* Days remaining */
         #day_remaining{
-            font-weight: 200;
+            font-family: "SF Pro Bold", Arial;
             padding: 0px;
-            font-size: 100px;
-            margin-bottom:70px;
+            font-size: 125px;
+            margin-bottom:50px;
+            letter-spacing: 2px;
         }
         .down{
             font-size: 17px;
@@ -104,7 +119,7 @@
         /* Footer styling */
         footer {
             margin-top: auto;
-            padding: 20px;
+            padding: 40px;
             background: #1a1a1a;
             text-align: center;
             font-size: 18px;
@@ -113,13 +128,23 @@
             display: flex;
             justify-content:space-between;
         }
+        #logo{
+            /* height: 100px; */
+            height: 85px;
+            width: 85px;
+            position: relative;
+            top: 25px;
+            left: 25px;
+            display: flex; 
+        }
     </style>
 </head>
 <body>
-    <div class="text">
-        <h1 id="ramadan">Ramadan • 1447</h1>
+    <a href="https://countdown-ramadan.github.io"><img id="logo" src="logo.png" alt=""></a>
+     <div class="text">
+            <h1 id="ramadan">2026 • Ramadan • 1447</h1>
         <h6 id="day_remaining">Days remaining</h6>
-    </div>
+        </div>
 
     <div id="counter">
         <div id="number">0</div>
@@ -134,7 +159,7 @@
 
     <!-- Footer -->
     <footer>
-        <div class="left-footer" >Version 1Q</div>
+        <div class="left-footer" >Version 1.4N</div>
         <div class="right-footer" >ig: @mdmuksitnafi23</div>
     </footer>
 
@@ -204,6 +229,3 @@
     </script>
 </body>
 </html>
-
-
-
