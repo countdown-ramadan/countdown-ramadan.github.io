@@ -1,232 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    
     <meta charset="UTF-8">
-    <title>Days Left Counter</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
+    <title>Ramadan Countdown</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="logo.png">
     <style>
-        *{
-            padding: 0;
-            margin:0;
-        }
-        body {
+        /* ===============================
+   GLOBAL RESET & VARIABLES
+   =============================== */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ===============================
+   THEME VARIABLES
+   =============================== */
+        :root {
+            /* 🔴 RAMADAN (DEFAULT) */
+            --bg-image: url(background.png);
+            --bg-color: #0b2a14;
+
+            --card-gradient: linear-gradient(180deg, rgb(0, 144, 70), rgb(0, 99, 48));
+
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+
+            --footer-bg: #1a1a1a;
+        }
+
+        /* ☀️ LIGHT THEME */
+        [data-theme="light"] {
+            /* 🟢 ADD YOUR LIGHT THEME IMAGE HERE */
+            --bg-image: url(background2.png);
+            /* ← CHANGE THIS */
+            /* or absolute / external URL if you want */
+
+            --bg-color: #f7f7f7;
+
+            --card-gradient: linear-gradient(180deg,
+                    rgba(255, 255, 255, 0.95),
+                    rgba(235, 235, 235, 0.95));
+
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+
+            --footer-bg: #e5e7eb;
+        }
+
+        /* ===============================
+   BODY + BACKGROUND CROSSFADE
+   =============================== */
+        body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            /* background: #262626; */
-            color: #ffffff;
             font-family: 'SF Pro Light', Helvetica, sans-serif;
-            background: url(background.png);
+            color: var(--text-main);
+
+            background-color: var(--bg-color);
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+
+            /* ✨ SMOOTH CROSSFADE */
+            transition:
+                background-image 0.6s ease,
+                background-color 0.6s ease,
+                color 0.4s ease;
         }
+
+        /* ===============================
+   COUNTER CARD ADJUSTMENT
+   =============================== */
+        #number {
+            background: var(--card-gradient);
+            transition:
+                background 0.6s ease,
+                padding 0.5s ease,
+                font-size 0.5s ease;
+        }
+
+        /* ===============================
+   MUTED TEXT
+   =============================== */
         .down {
-             text-align: center;
-        } 
+            color: var(--text-muted);
+        }
+
+        /* ===============================
+   FOOTER
+   =============================== */
+        footer {
+            background: var(--footer-bg);
+            color: var(--text-muted);
+            transition: background 0.6s ease, color 0.4s ease;
+        }
+
+        /* ===============================
+   BODY
+   =============================== */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'SF Pro Light', Helvetica, sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* ===============================
+   LOGO
+   =============================== */
+        #logo {
+            height: 85px;
+            width: 85px;
+            position: absolute;
+            top: 25px;
+            left: 25px;
+        }
+
+        /* ===============================
+   HEADINGS
+   =============================== */
+        h1,
+        h6 {
+            text-align: center;
+        }
+
+        #ramadan {
+            font-family: 'Ramadan', Arial;
+            margin-top: 40px;
+            font-size: 75px;
+            letter-spacing: 4.5px;
+            font-weight: 100;
+        }
+
+        #day_remaining {
+            font-family: "SF Pro Bold", Arial;
+            font-size: 125px;
+            margin-bottom: 40px;
+        }
+
+        /* ===============================
+   COUNTER
+   =============================== */
         #counter {
             text-align: center;
-            margin-bottom:40px;
+            margin-bottom: 40px;
         }
-        /* mid-button */
+
         #number {
-            overflow:visible;
-            background: linear-gradient(180deg,rgb(0, 144, 70) 0%, rgb(0, 99, 48) 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 0.384);
+            max-width: 90vw;
             font-family: 'SF Pro Medium';
             font-size: 350px;
-            font-weight: 500;
-            display: inline;
-            padding: 7px;
-            padding-left:65px;
-            padding-right:65px;
+            padding: 7px 65px;
             border-radius: 125px;
-            margin: 10px;
-            background-color: rgb(0, 117, 12);
-            transition: padding 0.5s, padding-left 0.5s, padding-right 0.5s,font-size 0.5s;
+
+            background: var(--card-gradient);
+
+            transition: padding 0.5s ease, font-size 0.5s ease;
         }
-        #number:hover{
+
+        #number:hover {
             cursor: pointer;
-            padding: 10px;
-            padding-left: 75px;
-            padding-right: 75px;
+            padding: 10px 75px;
             font-size: 360px;
         }
-        @font-face {
-            font-family: SF Pro Ultralight;
-            src: url(SF-Pro-Display-Ultralight.otf);
+
+        /* ===============================
+   AS-OF SECTION
+   =============================== */
+        .down {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
         }
-        @font-face {
-            font-family: SF Pro Bold;
-            src: url(SF-Pro-Text-Bold.otf);
-        }
-        @font-face {
-            font-family: SF Pro Medium;
-            src: url(SF-Pro-Text-Medium.otf);
-        }
-        @font-face {
-            font-family: Ramadan;
-            src: url(AwalRamadhan.ttf);
-        }
-        @font-face {
-            font-family: SF Pro Light;
-            src: url(SF-Pro-Text-Light.otf);
-        }
-        #label {
-            font-size: 24px;
-            opacity: 0.8;
-        }
-        h1, h6{
-            text-align: center;
-        }
-        /* Up-ramadan text */
-        #ramadan{
-            font-family: 'Ramadan', Arial;
-            margin-top: -50px;
-            padding: 0px;
-            font-weight: 100;
-            font-size:75px;
-            letter-spacing: 4.5px;
-        }
-        /* Days remaining */
-        #day_remaining{
-            font-family: "SF Pro Bold", Arial;
-            padding: 0px;
-            font-size: 125px;
-            margin-bottom:50px;
-            letter-spacing: 2px;
-        }
-        .down{
-            font-size: 17px;
-            letter-spacing: 1px;
-            color: rgba(255, 255, 255, 0.602);
-        }
-        #as-of-label{
+
+        #as-of-label {
             font-size: 20px;
-            padding: 10px;
+            letter-spacing: 0.15em;
+            text-transform: lowercase;
         }
-        /* Smooth transition base */
+
+        #as-of-date {
+            font-size: 22px;
+            margin-bottom: 30px;
+        }
+
+        /* ===============================
+   SMOOTH ANIMATION
+   =============================== */
         .fade-up {
             opacity: 0;
             transform: translateY(8px);
             transition: opacity 0.35s ease, transform 0.35s ease;
         }
+
         .fade-up.show {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Footer styling */
+        /* ===============================
+   THEME SWITCHER (WITH SELECTION)
+   =============================== */
+        #theme-switcher {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            gap: 12px;
+            z-index: 999;
+        }
+
+        #theme-switcher button {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            backdrop-filter: blur(12px);
+            padding: 10px 14px;
+            font-size: 18px;
+            border-radius: 14px;
+            cursor: pointer;
+            color: var(--text-main);
+            transition:
+                transform 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease,
+                opacity 0.2s ease;
+            opacity: 0.6;
+        }
+
+        /* Hover (non-selected) */
+        #theme-switcher button:hover {
+            opacity: 0.85;
+            transform: scale(1.05);
+        }
+
+        /* ✅ ACTIVE / SELECTED THEME */
+        #theme-switcher button.active {
+            opacity: 1;
+            transform: scale(1.15);
+            background: rgba(255, 255, 255, 0.28);
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.35),
+                0 8px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        /* ===============================
+   FOOTER
+   =============================== */
         footer {
             margin-top: auto;
             padding: 40px;
-            background: #1a1a1a;
-            text-align: center;
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.439);
-            line-height: 1.5;
+            background: var(--footer-bg);
             display: flex;
-            justify-content:space-between;
+            justify-content: space-between;
+            font-size: 18px;
+            color: var(--text-muted);
         }
-        #logo{
-            /* height: 100px; */
-            height: 85px;
-            width: 85px;
-            position: relative;
-            top: 25px;
-            left: 25px;
-            display: flex; 
+
+        /* ===============================
+   FONTS
+   =============================== */
+        @font-face {
+            font-family: SF Pro Bold;
+            src: url(SF-Pro-Text-Bold.otf);
+        }
+
+        @font-face {
+            font-family: SF Pro Medium;
+            src: url(SF-Pro-Text-Medium.otf);
+        }
+
+        @font-face {
+            font-family: SF Pro Light;
+            src: url(SF-Pro-Text-Light.otf);
+        }
+
+        @font-face {
+            font-family: Ramadan;
+            src: url(AwalRamadhan.ttf);
         }
     </style>
 </head>
+
 <body>
-    <a href="https://countdown-ramadan.github.io"><img id="logo" src="logo.png" alt=""></a>
-     <div class="text">
-            <h1 id="ramadan">2026 • Ramadan • 1447</h1>
-        <h6 id="day_remaining">Days remaining</h6>
-        </div>
+
+    <a href="https://countdown-ramadan.github.io">
+        <img id="logo" src="logo.png" alt="Logo">
+    </a>
+
+    <h1 id="ramadan">2026 • <b>Ramadan</b> • 1447</h1>
+    <h6 id="day_remaining">Days remaining</h6>
 
     <div id="counter">
-        <div id="number">0</div>
+        <div id="number" class="fade-up">0</div>
     </div>
-    
-    <div class="down">
-        <h1 id="as-of-label">as of</h1>
-        <h2 id="as-of-date"></h2>
-    </div>
-    <div id="number" class="fade-up"></div>
-    <h2 id="as-of-date" class="fade-up"></h2>
 
-    <!-- Footer -->
+    <div class="down">
+        <div id="as-of-label">as of</div>
+        <div id="as-of-date" class="fade-up"></div>
+    </div>
+
     <footer>
-        <div class="left-footer" >Version 1.4N</div>
-        <div class="right-footer" >ig: @mdmuksitnafi23</div>
+        <div>Version 2.0M</div>
+        <div>ig: @mdmuksitnafi23</div>
     </footer>
 
     <script>
-    /* =========================================
-       🔴 SET YOUR DESIRED TARGET DATE HERE 🔴
-       Format: new Date(YEAR, MONTH-1, DAY)
-       Example below = 18 February 2026
-       ========================================= */
-    const TARGET_DATE = new Date(2026, 1, 18);
-    /* ========================================= */
+        /* =========================================
+   🔴 SET YOUR TARGET DATE HERE 🔴
+   Format: new Date(YEAR, MONTH-1, DAY)
+   Example: Feb 18, 2026 → new Date(2026, 1, 18)
+   ========================================= */
+        const TARGET_DATE = new Date(2026, 1, 18);
+        /* ========================================= */
 
-    const numberEl = document.getElementById("number");
-    const asOfDateEl = document.getElementById("as-of-date");
+        const numberEl = document.getElementById("number");
+        const asOfDateEl = document.getElementById("as-of-date");
 
-    let lastRenderedDay = null;
+        let lastRenderedDay = null;
 
-    function formatDate(date) {
-        return date.toLocaleDateString("en-US", {
-            weekday: "long",
-            month: "long",
-            day: "numeric"
+        /* ---------- DATE FORMAT ---------- */
+        function formatDate(date) {
+            return date.toLocaleDateString("en-US", {
+                weekday: "long",
+                month: "long",
+                day: "numeric"
+            });
+        }
+
+        /* ---------- DAY CALCULATION ---------- */
+        function calculateDaysLeft(now) {
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const target = new Date(
+                TARGET_DATE.getFullYear(),
+                TARGET_DATE.getMonth(),
+                TARGET_DATE.getDate()
+            );
+            const diff = target - today;
+            return Math.max(Math.ceil(diff / 86400000), 0);
+        }
+
+        /* ---------- ANIMATION ---------- */
+        function animateText(el, newText) {
+            if (el.textContent === String(newText)) return;
+
+            el.classList.remove("show");
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    el.textContent = newText;
+                    el.classList.add("show");
+                }, 120);
+            });
+        }
+
+        /* ---------- AUTO UPDATE SYSTEM ---------- */
+        function updateIfDayChanged(force = false) {
+            const now = new Date();
+            const todayKey = now.toDateString();
+
+            if (force || todayKey !== lastRenderedDay) {
+                lastRenderedDay = todayKey;
+                animateText(numberEl, calculateDaysLeft(now));
+                animateText(asOfDateEl, formatDate(now));
+            }
+        }
+
+        /* Init */
+        updateIfDayChanged(true);
+        setInterval(() => updateIfDayChanged(false), 30000);
+        document.addEventListener("visibilitychange", () => {
+            if (!document.hidden) updateIfDayChanged(true);
         });
+
+        /* ---------- THEME SWITCHER (RAMADAN + LIGHT) ---------- */
+const root = document.documentElement;
+
+// Create switcher UI
+const switcher = document.createElement("div");
+switcher.id = "theme-switcher";
+switcher.innerHTML = `
+    <button data-theme="ramadan" aria-label="Ramadan theme">🌙</button>
+    <button data-theme="light" aria-label="Light theme">☀️</button>
+`;
+document.body.appendChild(switcher);
+
+const buttons = switcher.querySelectorAll("button");
+
+/* Apply theme + active state */
+function applyTheme(theme) {
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+    if (theme === "light") {
+        root.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+        switcher.querySelector('[data-theme="light"]').classList.add("active");
+    } else {
+        root.removeAttribute("data-theme");
+        localStorage.removeItem("theme");
+        switcher.querySelector('[data-theme="ramadan"]').classList.add("active");
     }
+}
 
-    function calculateDaysLeft(today) {
-        const target = new Date(TARGET_DATE);
+/* Load saved theme */
+const savedTheme = localStorage.getItem("theme");
+applyTheme(savedTheme === "light" ? "light" : "ramadan");
 
-        today.setHours(0, 0, 0, 0);
-        target.setHours(0, 0, 0, 0);
-
-        const diff = target - today;
-        return Math.max(Math.ceil(diff / (1000 * 60 * 60 * 24)), 0);
-    }
-
-    function animateText(el, newText) {
-        el.classList.remove("show");
-        setTimeout(() => {
-            el.textContent = newText;
-            el.classList.add("show");
-        }, 120);
-    }
-
-    function updateIfDayChanged(force = false) {
-        const now = new Date();
-        const todayKey = now.toDateString(); // day identity
-
-        if (force || todayKey !== lastRenderedDay) {
-            lastRenderedDay = todayKey;
-
-            const daysLeft = calculateDaysLeft(new Date(now));
-            animateText(numberEl, daysLeft);
-            animateText(asOfDateEl, formatDate(now));
-        }
-    }
-
-    /* ---------- SAFETY MECHANISMS ---------- */
-    updateIfDayChanged(true);
-    setInterval(() => {
-        updateIfDayChanged(false);
-    }, 30 * 1000); // every 30 seconds
-    document.addEventListener("visibilitychange", () => {
-        if (!document.hidden) {
-            updateIfDayChanged(true);
-        }
+/* Click handling */
+buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        applyTheme(btn.dataset.theme);
     });
-    </script>
-</body>
-</html>
+});
 
+/* ⌨️ KEYBOARD SHORTCUT: T */
+document.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "t") {
+        const isLight = root.getAttribute("data-theme") === "light";
+        applyTheme(isLight ? "ramadan" : "light");
+    }
+});
+    </script>
+
+</body>
+
+</html>
